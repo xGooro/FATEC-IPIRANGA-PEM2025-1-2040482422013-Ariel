@@ -1,0 +1,103 @@
+/*-------------------------------------------------------*
+*                      FATEC Ipiranga                    *
+* Disciplina: Programaçao Estruturada e Modular          *
+*          Prof. Veríssimo                               *
+*--------------------------------------------------------*
+* Objetivo do Programa: Diagrama de blocos               *
+* Data - 07/03/2025                                      * 
+* Autor: Ariel Pereira da silva                           *
+*--------------------------------------------------------*/
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h> //verificar dígitos
+
+#define GONDOLAS 10
+#define RUAS 3
+
+
+// struct para padronizar os produtos
+struct Produto {
+    char codigoProduto[5]; 
+    char descricaoProduto[50];
+    int ocupada; 
+
+};
+
+struct Produto estoque[RUAS][GONDOLAS]; //Vetor
+
+int main() {
+    int i, j, opcao, rua, gondola;
+    
+    
+    for (i = 0; i < RUAS; i++) {
+        for (j = 0; j < GONDOLAS; j++) {
+            estoque[i][j].ocupada = 0;
+        }
+    }
+    
+    do 
+    {
+        printf("\n\n 1 - Armazenar \n\n 2 - Retirar \n\n 3 - Listar Estoque \n\n 0 - Sair \n\n Escolha: ");
+        scanf("%d", &opcao);
+        
+        if (opcao == 1) 
+        { 
+            printf("Digite rua (0-%d) e gondola (0-%d): ", RUAS-1, GONDOLAS-1);
+            scanf("%d %d", &rua, &gondola);
+            if (rua < 0 || rua >= RUAS || gondola < 0 || gondola >= GONDOLAS)
+              {
+                printf("Erro: Rua ou gondola invalida!\n");
+                continue;
+              }
+            
+            if (estoque[rua][gondola].ocupada == 1) 
+            { 
+                printf("Erro: Gondola ocupada!\n");
+            } 
+            else {
+                printf("Digite o codigo do produto (Xnnn, ex: X123): ");
+                scanf("%4s", estoque[rua][gondola].codigoProduto);
+                
+                if (estoque[rua][gondola].codigoProduto[0] != 'X' || 
+                    !isdigit(estoque[rua][gondola].codigoProduto[1]) || 
+                    !isdigit(estoque[rua][gondola].codigoProduto[2]) || 
+                    !isdigit(estoque[rua][gondola].codigoProduto[3]) || 
+                    strlen(estoque[rua][gondola].codigoProduto) != 4) {
+                    printf("Erro: Codigo do produto deve seguir o padrão Xnnn!\n");
+                    continue;
+                }
+
+                printf("Digite a descrição do produto: ");
+                fgets(estoque[rua][gondola].descricaoProduto, 50, stdin);
+                
+
+                estoque[rua][gondola].ocupada = 1;
+                printf("Produto armazenado!\n");
+            }
+        } else if (opcao == 2) { 
+            printf("Digite rua e gondola: ");
+            scanf("%d %d", &rua, &gondola);
+            
+            if (estoque[rua][gondola].ocupada == 0) 
+            { 
+                printf("Erro: Nenhum produto nesta gondola!\n");
+            } else {
+                estoque[rua][gondola].ocupada = 0;
+                printf("Produto retirado!\n");
+            }
+        } 
+        else if (opcao == 3)
+          { 
+            for (i = 0; i < RUAS; i++) {
+                for (j = 0; j < GONDOLAS; j++) {
+                    if (estoque[i][j].ocupada == 1) {
+                        printf("Rua %d, Gondola %d: %s - %s\n", i, j, estoque[i][j].codigoProduto, estoque[i][j].descricaoProduto);
+                    }
+                }
+            }
+          }
+    } while (opcao != 0);
+    
+    return 0;
+}
