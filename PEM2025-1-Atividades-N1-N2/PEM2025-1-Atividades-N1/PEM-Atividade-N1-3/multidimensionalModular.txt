@@ -1,0 +1,128 @@
+/*-------------------------------------------------------*
+*                      FATEC Ipiranga                    *
+* Disciplina: Programaçao Estruturada e Modular          *
+*          Prof. Veríssimo                               *
+*--------------------------------------------------------*
+* Objetivo do Programa: vetorMultidimensionalmodular     *
+* Data - 15/03/2025                                      * 
+* Autor: Ariel Pereira da silva                          *
+*--------------------------------------------------------*/
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define GONDOLAS 10
+#define RUAS 3
+
+// padronizar os produtos
+typedef struct {
+    char codigoProduto[5]; 
+    char descricaoProduto[50];
+    int ocupada; 
+} Produto;
+
+Produto estoque[RUAS][GONDOLAS];
+
+// funções
+void inicializarEstoque(Produto (*estoque)[GONDOLAS]);
+void armazenarProduto(Produto *produto);
+void retirarProduto(Produto *produto);
+void listarEstoque(Produto (*estoque)[GONDOLAS]);
+int validarCodigoProduto(const char *codigo);
+
+int main() {
+    int opcao, rua, gondola;
+    
+    inicializarEstoque(estoque);
+    
+    do {
+        printf("\n\n 1 - Armazenar \n\n 2 - Retirar \n\n 3 - Listar Estoque \n\n 0 - Sair \n\n Escolha: ");
+        scanf("%d", &opcao);
+        
+        switch (opcao) {
+            case 1:
+                printf("Digite rua (0-%d) e gondola (0-%d): ", RUAS-1, GONDOLAS-1);
+                scanf("%d %d", &rua, &gondola);
+                if (rua < 0 || rua >= RUAS || gondola < 0 || gondola >= GONDOLAS) {
+                    printf("Erro: Rua ou gondola invalida!\n");
+                    continue;
+                }
+                armazenarProduto(&estoque[rua][gondola]);
+                break;
+            case 2:
+                printf("Digite rua e gondola: ");
+                scanf("%d %d", &rua, &gondola);
+                if (rua < 0 || rua >= RUAS || gondola < 0 || gondola >= GONDOLAS) {
+                    printf("Erro: Rua ou gondola invalida!\n");
+                    continue;
+                }
+                retirarProduto(&estoque[rua][gondola]);
+                break;
+            case 3:
+                listarEstoque(estoque);
+                break;
+            case 0:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opcao invalida!\n");
+        }
+    } while (opcao != 0);
+    
+    return 0;
+}
+
+void inicializarEstoque(Produto (*estoque)[GONDOLAS]) {
+    for (int i = 0; i < RUAS; i++) {
+        for (int j = 0; j < GONDOLAS; j++) {
+            estoque[i][j].ocupada = 0;
+        }
+    }
+}
+
+void armazenarProduto(Produto *produto) {
+    if (produto->ocupada) {
+        printf("Erro: Gondola ocupada!\n");
+        return;
+    }
+
+    printf("Digite o codigo do produto (Xnnn, ex: X123): ");
+    scanf("%4s", produto->codigoProduto);
+    
+    if (!validarCodigoProduto(produto->codigoProduto)) {
+        printf("Erro: Codigo do produto deve seguir o padrão Xnnn!\n");
+        return;
+    }
+
+    printf("Digite a descrição do produto: ");
+    getchar(); // Consumir o newline deixado pelo scanf
+    fgets(produto->descricaoProduto, 50, stdin);
+    produto->descricaoProduto[strcspn(produto->descricaoProduto, "\n")] = '\0'; // Remover o newline
+
+    produto->ocupada = 1;
+    printf("Produto armazenado!\n");
+}
+
+void retirarProduto(Produto *produto) {
+    if (!produto->ocupada) {
+        printf("Erro: Nenhum produto nesta gondola!\n");
+        return;
+    }
+
+    produto->ocupada = 0;
+    printf("Produto retirado!\n");
+}
+
+void listarEstoque(Produto (*estoque)[GONDOLAS]) {
+    for (int i = 0; i < RUAS; i++) {
+        for (int j = 0; j < GONDOLAS; j++) {
+            if (estoque[i][j].ocupada) {
+                printf("Rua %d, Gondola %d: %s - %s\n", i, j, estoque[i][j].codigoProduto, estoque[i][j].descricaoProduto);
+            }
+        }
+    }
+}
+
+int validarCodigoProduto(const char *codigo) {
+    return (codigo[0] == 'X' && isdigit(codigo[1]) && isdigit(codigo[2]) && isdigit(codigo[3]) && strlen(codigo) == 4);
+}
