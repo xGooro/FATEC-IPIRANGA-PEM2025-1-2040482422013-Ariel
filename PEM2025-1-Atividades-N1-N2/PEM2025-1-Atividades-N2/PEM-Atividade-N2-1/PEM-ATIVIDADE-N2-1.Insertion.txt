@@ -1,0 +1,58 @@
+/*-------------------------------------------------------*
+*                      FATEC Ipiranga                    *
+* Disciplina: Programaçao Estruturada e Modular          *
+*          Prof. Veríssimo                               *
+*--------------------------------------------------------*
+* Objetivo do Programa: Ordenação de dados com Insertion *                                    
+* Data - 16/05/2025                                      * 
+* Autor: Ariel Pereira da silva                          *
+*--------------------------------------------------------*/
+
+#include <stdio.h>
+
+// Funcao que realiza a ordenacao com Insertion
+void insertion(int *array, int n) {
+    if (array == NULL || n <= 1) return;
+
+    for (int i = 1; i < n; i++) {
+        int temp = array[i];
+        int j = i - 1;
+
+        while (j >= 0 && array[j] > temp) {
+            array[j + 1] = array[j];
+            j--;
+        }
+
+        if (j + 1 != i) {
+            array[j + 1] = temp;
+        }
+    }
+}
+
+int main() {
+    int n;
+
+     // Define o tamanho do array
+    printf("Digite a quantidade de numeros: ");
+    scanf("%d", &n);
+
+    int array[n]; 
+
+     // Entrada dos elementos do array
+    for (int i = 0; i < n; i++) {
+        printf("Digite o numero %d: ", i + 1);
+        scanf("%d", &array[i]);
+    }
+
+    // Chamada da funcao Insertion 
+    insertion(array, n);
+
+    // exibe os elementos ja ordenados
+    printf("\nVetor ordenado com (Insertion): ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", array[i]);
+    }
+
+    printf("\n");
+    return 0;
+}

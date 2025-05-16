@@ -1,0 +1,54 @@
+/*-------------------------------------------------------*
+*                      FATEC Ipiranga                    *
+* Disciplina: Programaçao Estruturada e Modular          *
+*          Prof. Veríssimo                               *
+*--------------------------------------------------------*
+* Objetivo do Programa: Ordenação de dados com BubbleSort*                                    
+* Data - 16/05/2025                                      * 
+* Autor: Ariel Pereira da silva                          *
+*--------------------------------------------------------*/
+
+#include <stdio.h>
+
+// Funcao que realiza o Bubble Sort
+void bubbleSort(int *arr, int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int trocou = 0;
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) { 
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                trocou = 1;
+            }
+        }
+        if (!trocou) break;
+    }
+}
+
+int main() {
+
+    // Define o tamanho do array
+    int n;
+    printf("Quantos numeros deseja ordenar ?");
+    scanf("%d", &n);
+    int arr[n];
+
+    // Entrada dos elementos do array
+    for (int i = 0; i < n; i++) {
+        printf("Digite o numero %d: ", i + 1);
+        scanf("%d", &arr[i]);
+    }
+
+    // Chamada da funcao bubblesort
+    bubbleSort(arr, n);
+
+    // exibe os elementos ja ordenados
+    printf("Numeros ordenados com (Bubble Sort):\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
