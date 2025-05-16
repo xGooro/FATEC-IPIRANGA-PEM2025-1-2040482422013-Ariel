@@ -10,49 +10,64 @@
 
 #include <stdio.h>
 
-// Funcao que realiza a ordenacao com Insertion
-void insertion(int *array, int n) {
-    if (array == NULL || n <= 1) return;
 
-    for (int i = 1; i < n; i++) {
-        int temp = array[i];
-        int j = i - 1;
-
-        while (j >= 0 && array[j] > temp) {
-            array[j + 1] = array[j];
-            j--;
-        }
-
-        if (j + 1 != i) {
-            array[j + 1] = temp;
-        }
-    }
-}
-
-int main() {
+// Função para ler e retornar o tamanho do Array
+int lerTamanho() {
     int n;
-
-     // Define o tamanho do array
-    printf("Digite a quantidade de numeros: ");
+    printf("Digite a quantidade de numeros ");
     scanf("%d", &n);
 
-    int array[n]; 
+    if (n <= 0 ) {
+        printf("Quantidade invalida.\n");
+        return -1;
+    }
 
-     // Entrada dos elementos do array
+    return n;
+}
+
+// Função para preencher o Array com os dados digitados
+void preencherArray(int *array, int n) {
     for (int i = 0; i < n; i++) {
         printf("Digite o numero %d: ", i + 1);
         scanf("%d", &array[i]);
     }
+}
 
-    // Chamada da funcao Insertion 
-    insertion(array, n);
+// Função de ordenação Insertion Sort
+void insertion(int *array, int n) {
+    for (int i = 1; i < n; i++) {
+        int temp = array[i];
+        int j = i - 1;
+        while (j >= 0 && array[j] > temp) {
+            array[j + 1] = array[j];
+            j--;
+        }
+        array[j + 1] = temp;
+    }
+}
 
-    // exibe os elementos ja ordenados
-    printf("\nVetor ordenado com (Insertion): ");
+// Função para exibir os dados ordenados
+void exibirDados(int *array, int n) {
+    printf("\nArray ordenado com (Insertion): ");
     for (int i = 0; i < n; i++) {
         printf("%d ", array[i]);
     }
-
     printf("\n");
+}
+
+int main() {
+    
+    int n = lerTamanho();  // Lê o tamanho
+
+    if (n == -1) {
+        return 1;  // termina o programa se entrada inválida
+    }
+
+    int array[n];
+
+    preencherArray(array, n); // Preenche o Array com os valores
+    insertion(array, n);      // Ordena o Array
+    exibirDados(array, n);    // Exibe os dados ordenados
+
     return 0;
 }
