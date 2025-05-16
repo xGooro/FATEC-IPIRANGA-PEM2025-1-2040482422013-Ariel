@@ -10,15 +10,37 @@
 
 #include <stdio.h>
 
+// Função para ler e retornar o tamanho do Array
+int lerTamanho() {
+    int n;
+    printf("Digite a quantidade de numeros (Maximo 10) ");
+    scanf("%d", &n);
+
+    if (n <= 0 ) {
+        printf("Quantidade invalida.\n");
+        return -1;
+    }
+
+    return n;
+}
+
+// Função para preencher o Array com os dados digitados
+void preencherArray(int *array, int n) {
+    for (int i = 0; i < n; i++) {
+        printf("Digite o numero %d: ", i + 1);
+        scanf("%d", &array[i]);
+    }
+}
+
 // Funcao que realiza o Bubble Sort
-void bubbleSort(int *arr, int n) {
+void bubbleSort(int *array, int n) {
     for (int i = 0; i < n - 1; i++) {
         int trocou = 0;
         for (int j = 0; j < n - i - 1; j++) {
-            if (arr[j] > arr[j + 1]) { 
-                int temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
+            if (array[j] > array[j + 1]) { 
+                int temp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = temp;
                 trocou = 1;
             }
         }
@@ -26,29 +48,28 @@ void bubbleSort(int *arr, int n) {
     }
 }
 
-int main() {
-
-    // Define o tamanho do array
-    int n;
-    printf("Quantos numeros deseja ordenar ?");
-    scanf("%d", &n);
-    int arr[n];
-
-    // Entrada dos elementos do array
+// Função para exibir os dados ordenados
+void exibirDados(int *array, int n) {
+    printf("\nArray ordenado com (bubbleSort): ");
     for (int i = 0; i < n; i++) {
-        printf("Digite o numero %d: ", i + 1);
-        scanf("%d", &arr[i]);
-    }
-
-    // Chamada da funcao bubblesort
-    bubbleSort(arr, n);
-
-    // exibe os elementos ja ordenados
-    printf("Numeros ordenados com (Bubble Sort):\n");
-    for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
+        printf("%d ", array[i]);
     }
     printf("\n");
+}
+
+int main() {
+    
+    int n = lerTamanho();  // Lê o tamanho
+
+    if (n == -1) {
+        return 1;  // termina o programa se entrada inválida
+    }
+
+    int array[n];
+
+    preencherArray(array, n); // Preenche o Array com os valores
+    bubbleSort(array, n);      // Ordena o Array
+    exibirDados(array, n);    // Exibe os dados ordenados
 
     return 0;
 }
